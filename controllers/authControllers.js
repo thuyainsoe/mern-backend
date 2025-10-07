@@ -71,6 +71,36 @@ class authControllers {
     }
   };
 
+  seller_login = async (req, res) => {
+    const { email, password } = req.body;
+    try {
+      const seller = await sellerModel
+        .findOne({
+          email,
+        })
+        .select("+password");
+      if (seller) {
+        const match = await bcrypt.compare(password, seller.password);
+        if (match) {
+          const token = await createToken({
+            id: seller.id,
+            role: seller.role,
+          });
+          res.cookie("accessToken", token, {
+            expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+          });
+          responseReturn(res, 200, { token, message: "Login Success." });
+        } else {
+          responseReturn(res, 404, { error: "Password Wrong" });
+        }
+      } else {
+        responseReturn(res, 404, { error: "Email not found" });
+      }
+    } catch (error) {
+      responseReturn(res, 500, { error: error.message });
+    }
+  };
+
   getUser = async (req, res) => {
     const { id, role } = req;
 
@@ -79,10 +109,11 @@ class authControllers {
         const user = await adminModel.findById(id);
         responseReturn(res, 200, { userInfo: user });
       } else {
-        console.log("Seller Info");
+        const seller = await sellerModel.findById(id);
+        responseReturn(res, 200, { userInfo: seller });
       }
     } catch (error) {
-      console.log(error.message);
+      responseReturn(res, 500, { error: "Internal server error." });
     }
   };
 }
