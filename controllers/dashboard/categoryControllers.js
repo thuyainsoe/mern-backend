@@ -67,7 +67,7 @@ class categoryController {
 
       // Build search query
       const searchQuery = searchValue
-        ? { $text: { $search: searchValue } }
+        ? { name: { $regex: searchValue, $options: "i" } }
         : {};
 
       // Get categories with pagination
