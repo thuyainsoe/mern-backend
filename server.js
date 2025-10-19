@@ -22,7 +22,7 @@ dbConnect();
 // Routes
 app.use("/api", require("./routes/authRoutes"));
 app.use("/api", require("./routes/dashboard/categoryRoutes"));
-// app.use("/api", require("./routes/dashboard/productRoutes"));
+app.use("/api", require("./routes/dashboard/productRoutes"));
 
 app.get("/", (req, res) =>
   res.json({ message: "Hello from Express + Docker!" })

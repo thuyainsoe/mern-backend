@@ -4,30 +4,34 @@ const upload = require("../../middlewares/uploadMiddleware");
 
 const router = require("express").Router();
 
-// ✅ Add new product
 router.post(
   "/product-add",
   authMiddleware,
-  upload.single("image"), // If multiple images, use upload.array("images", limit)
+  upload.array("images", 6),
   productControllers.add_product
 );
 
-// ✅ Get all products (with pagination, search, etc. if supported)
-router.get("/product-get", authMiddleware, productControllers.get_product);
+router.get("/product-get", authMiddleware, productControllers.get_products);
 
-// ✅ Update product by ID
+router.get("/product-get/:id", authMiddleware, productControllers.get_product);
+
 router.put(
   "/product-update/:id",
   authMiddleware,
-  upload.single("image"),
+  upload.array("images", 6),
   productControllers.update_product
 );
 
-// ✅ Delete product by ID
 router.delete(
   "/product-delete/:id",
   authMiddleware,
   productControllers.delete_product
+);
+
+router.put(
+  "/product-image-delete",
+  authMiddleware,
+  productControllers.delete_product_image
 );
 
 module.exports = router;
