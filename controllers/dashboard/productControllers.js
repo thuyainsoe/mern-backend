@@ -207,10 +207,7 @@ class productController {
           });
 
           const newImageUrls = await Promise.all(uploadPromises);
-          updateData.images = [
-            ...existingProduct.images,
-            ...newImageUrls,
-          ];
+          updateData.images = [...existingProduct.images, ...newImageUrls];
         }
 
         const product = await productModel.findByIdAndUpdate(id, updateData, {
