@@ -36,8 +36,22 @@ const sellerSchema = new Schema(
       default: "",
     },
     shopInfo: {
-      type: Object,
-      default: {},
+      shopName: {
+        type: String,
+        default: "",
+      },
+      division: {
+        type: String,
+        default: "",
+      },
+      district: {
+        type: String,
+        default: "",
+      },
+      sub_district: {
+        type: String,
+        default: "",
+      },
     },
   },
   { timestamps: true }
